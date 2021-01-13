@@ -2,10 +2,27 @@
 gem 'minitest', '>= 5.0.0'
 require 'minitest/autorun'
 
+ADVANCE = {
+  north: [0, 1],
+  south: [0, -1],
+  east: [1, 0],
+  west: [-1, 0],
+}
+TURN_LEFT = { north: :west, south: :east, east: :north, west: :south }
+TURN_RIGTH = { north: :east, south: :west, east: :south, west: :north }
+
 def magic((x,y,orientation), sequence_of_commands)
   # ...
   # return final_position
-  return x,y+1,orientation
+  case sequence_of_commands
+  when "A"
+    diff_x, diff_y = ADVANCE.fetch(orientation)
+    return x + diff_x, y + diff_y, orientation
+  when "L"
+    return x, y, TURN_LEFT.fetch(orientation)
+  when "R"
+    return x, y, TURN_RIGHT.fetch(orientation)
+  end
 end
 
 class RobotTurningTest < Minitest::Test
@@ -15,9 +32,44 @@ class RobotTurningTest < Minitest::Test
     assert_equal([9, 4, :west], final_position)
   end
 
+  def test_turn_left_from_north
+    final_position = magic([7, 3, :north], "L")
+    assert_equal([7, 3, :west], final_position)
+  end
+
+  def test_turn_left_from_south
+    final_position = magic([7, 3, :south], "L")
+    assert_equal([7, 3, :east], final_position)
+  end
+
+  def test_turn_left_from_east
+    final_position = magic([7, 3, :east], "L")
+    assert_equal([7, 3, :north], final_position)
+  end
+
+  def test_turn_left_from_west
+    final_position = magic([7, 3, :west], "L")
+    assert_equal([7, 3, :south], final_position)
+  end
+
   def test_advance_north
     final_position = magic([7, 3, :north], "A")
     assert_equal([7, 4, :north], final_position)
+  end
+
+  def test_advance_south
+    final_position = magic([7, 3, :south], "A")
+    assert_equal([7, 2, :south], final_position)
+  end
+
+  def test_advance_east
+    final_position = magic([7, 3, :east], "A")
+    assert_equal([8, 3, :east], final_position)
+  end
+
+  def test_advance_west
+    final_position = magic([7, 3, :west], "A")
+    assert_equal([6, 3, :west], final_position)
   end
 end
 
