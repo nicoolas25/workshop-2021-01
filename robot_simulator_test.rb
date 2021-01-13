@@ -1,15 +1,21 @@
 #!/usr/bin/env ruby
 gem 'minitest', '>= 5.0.0'
 require 'minitest/autorun'
-require_relative 'robot_simulator'
+
+def magic(initial_position, sequence_of_commands)
+  # ...
+  # return final_position
+  return initial_position
+end
 
 class RobotTurningTest < Minitest::Test
-  attr_reader :robot
-
-  def setup
-    @robot = Robot.new
+  def test_readme
+    final_position = magic([7, 3, :north], "RAALAL")
+    assert_equal([9, 4, :west], final_position)
   end
+end
 
+__END__
   def test_robot_bearing
     [:east, :west, :north, :south].each do |direction|
       robot.orient(direction)
@@ -181,4 +187,4 @@ class RobotSimulatorTest < Minitest::Test
     assert_equal [11, 5], robot3.coordinates
     assert_equal :north, robot3.bearing
   end
-end
+

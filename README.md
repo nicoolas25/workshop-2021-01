@@ -6,9 +6,9 @@ A robot factory's test facility needs a program to verify robot movements.
 
 The robots have three possible movements:
 
-- turn right
-- turn left
-- advance
+- turn Right
+- turn Left
+- Advance
 
 Robots are placed on a hypothetical infinite grid, facing a particular
 direction (north, east, south, or west) at a set of {x,y} coordinates,
