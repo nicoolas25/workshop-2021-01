@@ -9,25 +9,27 @@ ADVANCE = {
   west: [-1, 0],
 }
 TURN_LEFT = { north: :west, south: :east, east: :north, west: :south }
-TURN_RIGTH = { north: :east, south: :west, east: :south, west: :north }
+TURN_RIGHT = { north: :east, south: :west, east: :south, west: :north }
 
 def magic((x,y,orientation), sequence_of_commands)
   # ...
   # return final_position
-  case sequence_of_commands
-  when "A"
-    diff_x, diff_y = ADVANCE.fetch(orientation)
-    return x + diff_x, y + diff_y, orientation
-  when "L"
-    return x, y, TURN_LEFT.fetch(orientation)
-  when "R"
-    return x, y, TURN_RIGHT.fetch(orientation)
+  sequence_of_commands.each_char do |command|
+    x,y,orientation = case command
+    when "A"
+      diff_x, diff_y = ADVANCE.fetch(orientation)
+      [x + diff_x, y + diff_y, orientation]
+    when "L"
+      [x, y, TURN_LEFT.fetch(orientation)]
+    when "R"
+      [x, y, TURN_RIGHT.fetch(orientation)]
+    end
   end
+  return x,y,orientation
 end
 
 class RobotTurningTest < Minitest::Test
   def test_readme
-    skip
     final_position = magic([7, 3, :north], "RAALAL")
     assert_equal([9, 4, :west], final_position)
   end
@@ -70,6 +72,11 @@ class RobotTurningTest < Minitest::Test
   def test_advance_west
     final_position = magic([7, 3, :west], "A")
     assert_equal([6, 3, :west], final_position)
+  end
+
+  def test_advance_twice_west
+    final_position = magic([7, 3, :west], "AA")
+    assert_equal([5, 3, :west], final_position)
   end
 end
 
