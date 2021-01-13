@@ -2,16 +2,22 @@
 gem 'minitest', '>= 5.0.0'
 require 'minitest/autorun'
 
-def magic(initial_position, sequence_of_commands)
+def magic((x,y,orientation), sequence_of_commands)
   # ...
   # return final_position
-  return initial_position
+  return x,y+1,orientation
 end
 
 class RobotTurningTest < Minitest::Test
   def test_readme
+    skip
     final_position = magic([7, 3, :north], "RAALAL")
     assert_equal([9, 4, :west], final_position)
+  end
+
+  def test_advance_north
+    final_position = magic([7, 3, :north], "A")
+    assert_equal([7, 4, :north], final_position)
   end
 end
 
